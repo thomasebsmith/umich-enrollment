@@ -1,0 +1,41 @@
+{
+  "url": "https://lsa.umich.edu/cg/cg_detail.aspx?content=$$TERMID$$$$CLASS$$&termArray=$$TERMARRAY$$",
+  "initial_regex": ["(<span.*?>[^<]*)</b>", "\\1"],
+  "elements": [
+    {
+      "key": "sections",
+      "selector": "div.clsschedulerow>:first-child>:first-child",
+      "select_all": true,
+      "scrape": [
+        {
+          "key": "name",
+          "selector": ":scope>:first-child>span",
+          "select_all": false,
+          "scrape": {
+            "type": "text",
+            "regex": [" $", ""]
+          }
+        },
+        {
+          "key": "seats",
+          "selector": ":scope>:nth-child(5)",
+          "select_all": false,
+          "scrape": {
+            "type": "text_nodes",
+            "parse_as": "int"
+          }
+        },
+        {
+          "key": "waitlist",
+          "selector": ":scope>:nth-child(7)",
+          "select_all": false,
+          "scrape": {
+            "type": "text_nodes",
+            "parse_as": "int"
+          }
+        }
+      ]
+    }
+  ],
+  "scrape_all": false
+}
