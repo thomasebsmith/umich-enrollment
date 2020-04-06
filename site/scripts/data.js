@@ -2,9 +2,12 @@
   var chartsElement = global.document.body;
   var dataByTerm = global.Object.create(null);
 
+  var getClassTitle = function(classID) {
+    return classID.replace(/^([A-Z]+)([0-9]+)([0-9]{3})$/g, "$1 $2");
+  };
   var getData = function(term, callback) {
     term = (term + "").replace(/[^a-z0-9_]/g, "")
-    if (dataByTerm.hasOwnProperty(term)) {
+    if (dataByTerm[term]) {
       callback(dataByTerm[term]);
     }
     else {
@@ -43,7 +46,7 @@
       waitlist: Math.max(lecWaitlist, otherWaitlist)
     };
   };
-  var chartForData = function(data, ctx) {
+  var chartForData = function(classID, data, ctx) {
     var seats = [];
     var waitlist = [];
     for (var t in data) {
@@ -63,16 +66,44 @@
       type: "line",
       data: {
         datasets: [
-          seats,
-          waitlist
+          {
+            label: "Open seats",
+            data: seats,
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            borderColor: "blue",
+            lineTension: 0
+          },
+          {
+            label: "Waitlist",
+            data: waitlist,
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            borderColor: "red",
+            lineTension: 0
+          }
         ]
       },
       options: {
         scales: {
-          xAxes: [
-            { type: "time" },
-            { type: "time" }
-          ]
+          xAxes: [{
+            type: "time"
+          }],
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        },
+        title: {
+          display: true,
+          fontSize: 24,
+          text: getClassTitle(classID)
+        },
+        tooltips: {
+          callbacks: {
+            title: function(tooltipItem, data) {
+              return (new global.Date(tooltipItem[0].label)).toLocaleString();
+            }
+          }
         }
       }
     });
@@ -88,7 +119,7 @@
       }
       var canvasEl = global.document.createElement("canvas");
       chartsElement.appendChild(canvasEl);
-      callback(chartForData(data[classID], canvasEl.getContext("2d")));
+      callback(chartForData(classID, data[classID], canvasEl.getContext("2d")));
     });
   };
   var setChartsElement = function(el) {
