@@ -11,7 +11,12 @@
     <script src="/scripts/data.js"></script>
     <script>
       data.setChartsElement(document.getElementById("charts"));
-      data.addChart("f_20_2310", "EECS485001");
+      data.preloadData("f_20_2310", function(error) {
+        // TODO: Handle error
+        data.addChart("f_20_2310", "EECS482001");
+        data.addChart("f_20_2310", "EECS485001");
+        data.addChart("f_20_2310", "EECS490001");
+      });
     </script>
   </body>
 </html>

@@ -25,6 +25,12 @@
       req.send();
     }
   };
+  var preloadData = function(term, callback) {
+    getData(term, function(_, error) {
+      callback(error);
+    });
+  };
+
   var dataPoint = function(data) {
     var lecSeats = 0;
     var otherSeats = 0;
@@ -62,6 +68,17 @@
         });
       }
     }
+    var timeComparator = function(a, b) {
+      if (a.t < b.t) {
+        return -1;
+      }
+      if (b.t < a.t) {
+        return 1;
+      }
+      return 0;
+    };
+    seats.sort(timeComparator);
+    waitlist.sort(timeComparator);
     var chart = new global.Chart(ctx, {
       type: "line",
       data: {
@@ -69,15 +86,15 @@
           {
             label: "Open seats",
             data: seats,
-            backgroundColor: "rgba(0, 0, 0, 0)",
             borderColor: "blue",
+            fill: false,
             lineTension: 0
           },
           {
             label: "Waitlist",
             data: waitlist,
-            backgroundColor: "rgba(0, 0, 0, 0)",
             borderColor: "red",
+            fill: false,
             lineTension: 0
           }
         ]
@@ -129,6 +146,7 @@
   global.data = {
     addChart: addChart,
     getData: getData,
+    preloadData: preloadData,
     setChartsElement: setChartsElement
   };
 })(window);
