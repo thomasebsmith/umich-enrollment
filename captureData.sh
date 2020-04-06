@@ -16,6 +16,7 @@ while IFS= read -r class; do
     mkdir -p "./data/$term/$class/"
     python3 ./scraper/__main__.py captureData_temp.json > \
       "./data/$term/$class/$filename"
+    sleep 0.5
   fi
 done < term
 rm -f captureData_temp.json
