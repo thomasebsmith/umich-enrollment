@@ -4,6 +4,10 @@ term=""
 term_id=""
 filename="$(date -u '+%Y-%m-%dT%H:%M:%SZ').json"
 
+if [ -f data.tar.gz ]; then
+  tar -xzf data.tar.gz
+fi
+
 while IFS= read -r class; do
   if [ "$term" = "" ]; then
     term="$class"
@@ -20,3 +24,6 @@ while IFS= read -r class; do
   fi
 done < term
 rm -f captureData_temp.json
+
+tar -czf data.tar.gz data/
+rm -rf data

@@ -3,6 +3,7 @@
 import json
 import os
 import re
+import subprocess
 import sys
 
 def gather_data(directory):
@@ -20,6 +21,8 @@ if len(sys.argv) != 2:
   print("Usage: " + sys.argv[0] + " <term>")
   sys.exit(1)
 
+subprocess.run(["tar", "-xzf", "data.tar.gz"])
+
 term = re.sub(r"[^a-z0-9_]", "", sys.argv[1])
 directory = os.path.join("./data/", term)
 class_dirs = os.scandir(directory)
@@ -31,3 +34,5 @@ for class_dir in class_dirs:
 output_file = os.path.join("./site/data/", term + ".json")
 output_file = open(output_file, "w")
 json.dump(output_data, output_file)
+
+subprocess.run(["rm", "-rf", "data"])
