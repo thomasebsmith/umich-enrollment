@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>U-M EECS Enrollment Data | Fall 2020</title>
+  </head>
+  <body>
+    <h1>U-M EECS Enrollment Data — Fall 2020</h1>
+    <div id="charts"></div>
+    <script src="/scripts/chart.js"></script>
+    <script src="/scripts/data.js"></script>
+    <script>
+      data.setChartsElement(document.getElementById("charts"));
+      data.addChart("f_20_2310", "EECS183001");
+    </script>
+  </body>
+</html>
