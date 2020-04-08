@@ -10,6 +10,7 @@ fi
 
 progress=0
 total_number="$(wc -l < term | xargs)"
+total_number="$(($total_number - 1))" # Since the first line is the term ID
 term_cols="$(tput cols)"
 avail_cols="$(($term_cols - 2))"
 
