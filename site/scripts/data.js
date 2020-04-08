@@ -102,7 +102,10 @@
       options: {
         scales: {
           xAxes: [{
-            type: "time"
+            type: "time",
+            time: {
+              unit: "day"
+            }
           }],
           yAxes: [{
             ticks: {
