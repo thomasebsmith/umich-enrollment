@@ -145,9 +145,19 @@
   var setChartsElement = function(el) {
     chartsElement = el;
   };
+  var getClasses = function(term, callback) {
+    getData(term, function(data, error) {
+      if (error !== undefined) {
+        return callback(undefined, error);
+      }
+      callback(Object.keys(data));
+    });
+  };
 
   global.data = {
     addChart: addChart,
+    getClasses: getClasses,
+    getClassTitle: getClassTitle,
     getData: getData,
     preloadData: preloadData,
     setChartsElement: setChartsElement

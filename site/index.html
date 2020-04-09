@@ -7,13 +7,22 @@
   </head>
   <body>
     <h1>U-M EECS Enrollment Data — Fall 2020</h1>
+    <select id="term-select">
+      <option value="">-- Choose a term --</option>
+      <option value="f_20_2310">Fall 2020</option>
+    </select>
+    <div id="add-class-section" class="hidden">
+      <select id="class-select">
+        <option value="">-- Choose a class --</option>
+      </select>
+      <button id="add-class-button">Show data</button>
+    </div>
     <div id="charts"></div>
     <script src="/scripts/chart.js"></script>
     <script src="/scripts/data.js"></script>
+    <script src="/scripts/index.js"></script>
     <script>
-      data.setChartsElement(document.getElementById("charts"));
       data.preloadData("f_20_2310", function(error) {
-        // TODO: Handle error
         data.addChart("f_20_2310", "EECS482001");
         data.addChart("f_20_2310", "EECS485001");
         data.addChart("f_20_2310", "EECS490001");
