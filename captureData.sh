@@ -30,11 +30,14 @@ update_progress () {
   progress="$(($progress + 1))"
 }
 
+one_class=""
+
 while IFS= read -r class; do
   if [ "$term" = "" ]; then
     term="$class"
     term_id="$(echo "$term" | cut -d'_' -f3)"
   else
+    one_class="$class"
     sed "s/\\\$\\\$TERMID\\\$\\\$/$term_id/g" template.json > \
       captureData_temp.json
     sed -i '' "s/\\\$\\\$TERMARRAY\\\$\\\$/$term/g" captureData_temp.json
@@ -46,10 +49,20 @@ while IFS= read -r class; do
     sleep 0.5
   fi
 done < term
+
+update_progress
+printf '\n'
+
+# Prompt user to check that this at least sort of worked
+echo 'Example file:'
+cat "./data/$term/$one_class/$filename"
+read -p "Continue? [n]" choice
+case "$choice" in
+  y|Y ) echo "Continuing...";;
+  *   ) echo "Exiting. Note that cleanup may be required."; exit 1;;
+esac
+
 rm -f captureData_temp.json
 
 tar -czf data.tar.gz data/
 rm -rf data
-
-update_progress
-printf '\n'
