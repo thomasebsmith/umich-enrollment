@@ -36,16 +36,32 @@
     var otherSeats = 0;
     var lecWaitlist = 0;
     var otherWaitlist = 0;
+    var hasLec = false;
+    var hasOther = false;
     for (var i = 0; i < data.sections.length; ++i) {
       var section = data.sections[i].name;
       if (section.lastIndexOf("(LEC)") === section.length - "(LEC)".length) {
         lecSeats += data.sections[i].seats | 0;
         lecWaitlist += data.sections[i].waitlist | 0;
+        hasLec = true;
       }
       else {
         otherSeats += data.sections[i].seats | 0;
         otherWaitlist += data.sections[i].waitlist | 0;
+        hasOther = true;
       }
+    }
+    if (hasLec && !hasOther) {
+      return {
+        seats: lecSeats,
+        waitlist: lecWaitlist
+      };
+    }
+    if (hasOther && !hasLec) {
+      return {
+        seats: otherSeats,
+        waitlist: otherWaitlist
+      };
     }
     return {
       seats: Math.min(lecSeats, otherSeats),
