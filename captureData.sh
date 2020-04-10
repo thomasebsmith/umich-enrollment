@@ -36,6 +36,7 @@ while IFS= read -r class; do
   if [ "$term" = "" ]; then
     term="$class"
     term_id="$(echo "$term" | cut -d'_' -f3)"
+    echo "Capturing data for term $term"
   else
     one_class="$class"
     sed "s/\\\$\\\$TERMID\\\$\\\$/$term_id/g" template.json > \
@@ -56,7 +57,7 @@ printf '\n'
 # Prompt user to check that this at least sort of worked
 echo 'Example file:'
 cat "./data/$term/$one_class/$filename"
-read -p "Continue? [n]" choice
+read -p "Continue? [n] " choice
 case "$choice" in
   y|Y ) echo "Continuing...";;
   *   ) echo "Exiting. Note that cleanup may be required."; exit 1;;
