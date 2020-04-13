@@ -1,4 +1,13 @@
 (function(global) {
+  var timeComparator = function(a, b) {
+    if (a.t < b.t) {
+      return -1;
+    }
+    if (b.t < a.t) {
+      return 1;
+    }
+    return 0;
+  };
   var chartsElement = global.document.body;
   var dataByTerm = global.Object.create(null);
 
@@ -68,7 +77,7 @@
       waitlist: Math.max(lecWaitlist, otherWaitlist)
     };
   };
-  var chartForData = function(classID, data, ctx) {
+  var reformatData = function(data) {
     var seats = [];
     var waitlist = [];
     for (var t in data) {
@@ -84,31 +93,28 @@
         });
       }
     }
-    var timeComparator = function(a, b) {
-      if (a.t < b.t) {
-        return -1;
-      }
-      if (b.t < a.t) {
-        return 1;
-      }
-      return 0;
-    };
     seats.sort(timeComparator);
     waitlist.sort(timeComparator);
+    return {
+      seats: seats,
+      waitlist: waitlist
+    };
+  };
+  var chartForData = function(classID, data, ctx) {
     var chart = new global.Chart(ctx, {
       type: "line",
       data: {
         datasets: [
           {
             label: "Open seats",
-            data: seats,
+            data: data.seats,
             borderColor: "blue",
             fill: false,
             lineTension: 0
           },
           {
             label: "Waitlist",
-            data: waitlist,
+            data: data.waitlist,
             borderColor: "red",
             fill: false,
             lineTension: 0
@@ -145,6 +151,21 @@
     });
     return chart;
   };
+  var latestRegistrationRange = function(data) {
+    var time = null;
+    var timeIndex = null;
+    var beforeTime = null;
+    for (var i = data.seats.length - 1; i >= 0; --i) {
+      if (data.seats[i].y <= 0) {
+        time = new Date(data.seats[i].t);
+        timeIndex = i;
+      }
+    }
+    if (timeIndex !== null && timeIndex !== 0) {
+      beforeTime = new Date(data.seats[timeIndex - 1].t);
+    }
+    return [beforeTime, time];
+  };
   var addChart = function(term, classID, callback) {
     if (callback === undefined) {
       callback = function() {};
@@ -153,9 +174,40 @@
       if (error) {
         return callback(undefined, error);
       }
+      var dataEl = global.document.createElement("div");
       var canvasEl = global.document.createElement("canvas");
-      chartsElement.appendChild(canvasEl);
-      callback(chartForData(classID, data[classID], canvasEl.getContext("2d")));
+      dataEl.appendChild(canvasEl);
+      chartsElement.appendChild(dataEl);
+      var thisData = reformatData(data[classID]);
+      var dates = latestRegistrationRange(thisData);
+      var text;
+      if (dates[1] === null) {
+        text = "There are open seats in this class!";
+      }
+      else {
+        text = "This class ran out of open seats ";
+        if (dates[0] === null) {
+          text += "before " + dates[1].toLocaleDateString() + " at ";
+          text += dates[1].toLocaleTimeString() + ".";
+        }
+        else if (dates[0].toLocaleDateString() ===
+                 dates[1].toLocaleDateString()) {
+          text += "on " + dates[0].toLocaleDateString() + " between ";
+          text += dates[0].toLocaleTimeString() + " and ";
+          text += dates[1].toLocaleTimeString() + ".";
+        }
+        else {
+          text += "between " + dates[0].toLocaleDateString() + " at ";
+          text += dates[0].toLocaleTimeString() + " and ";
+          text += dates[1].toLocaleDateString() + " at ";
+          text += dates[1].toLocaleTimeString() + ".";
+        }
+      }
+      var datesEl = global.document.createElement("p");
+      datesEl.classList.add("no-seats-left");
+      datesEl.textContent = text;
+      dataEl.appendChild(datesEl);
+      callback(chartForData(classID, thisData, canvasEl.getContext("2d")));
     });
   };
   var setChartsElement = function(el) {

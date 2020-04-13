@@ -32,6 +32,9 @@ var loadTerm = function(term) {
           classSelectEl.appendChild(el);
         }
       }
+      data.addChart("f_20_2310", "EECS482001");
+      data.addChart("f_20_2310", "EECS485001");
+      data.addChart("f_20_2310", "EECS490001");
     });
   }
 };
