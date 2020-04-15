@@ -20,7 +20,7 @@
       callback(dataByTerm[term]);
     }
     else {
-      var path = "/data/" + term + ".json";
+      var path = "./data/" + term + ".json";
       var req = new global.XMLHttpRequest();
       req.open("GET", path, true);
       req.responseType = "json";
