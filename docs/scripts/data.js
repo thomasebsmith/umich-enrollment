@@ -1,4 +1,9 @@
 (function(global) {
+  var isDark = (typeof global.matchMedia) === "function" &&
+               global.matchMedia("(prefers-color-scheme: dark)").matches;
+  if (isDark) {
+    global.Chart.defaults.global.defaultFontColor = "#bbb";
+  }
   var timeComparator = function(a, b) {
     if (a.t < b.t) {
       return -1;
@@ -108,14 +113,14 @@
           {
             label: "Open seats",
             data: data.seats,
-            borderColor: "blue",
+            borderColor: isDark ? "#48f" : "blue",
             fill: false,
             lineTension: 0
           },
           {
             label: "Waitlist",
             data: data.waitlist,
-            borderColor: "red",
+            borderColor: isDark ? "#f22" : "red",
             fill: false,
             lineTension: 0
           }
@@ -127,11 +132,17 @@
             type: "time",
             time: {
               unit: "day"
+            },
+            gridLines: {
+              color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"
             }
           }],
           yAxes: [{
             ticks: {
               min: 0
+            },
+            gridLines: {
+              color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"
             }
           }]
         },
