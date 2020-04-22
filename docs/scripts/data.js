@@ -152,6 +152,9 @@
           text: getClassTitle(classID)
         },
         tooltips: {
+          backgroundColor: isDark ? "rgba(63, 63, 63, 0.8)" :
+                                    "rgba(0, 0, 0, 0.8)",
+          titleFontColor: isDark ? "#ddd" : "#fff",
           callbacks: {
             title: function(tooltipItem, data) {
               return (new global.Date(tooltipItem[0].label)).toLocaleString();
