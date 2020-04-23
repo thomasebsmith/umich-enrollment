@@ -10,6 +10,9 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background: #181818;
+    color: #d8d8d8;
+  }
+  h1 {
     color: #eeeeee;
   }
   select, option, button {
