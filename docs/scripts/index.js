@@ -7,6 +7,12 @@ var chartsEl = document.getElementById("charts");
 var selectedTerm = "f_20_2310";
 termSelectEl.selectedIndex = 1;
 
+var defaultClasses = [
+  "EECS482001",
+  "EECS485001",
+  "EECS490001"
+];
+
 var loadTerm = function(term) {
   // Clear all current charts
   chartsEl.textContent = "";
@@ -32,9 +38,9 @@ var loadTerm = function(term) {
           classSelectEl.appendChild(el);
         }
       }
-      data.addChart("f_20_2310", "EECS482001");
-      data.addChart("f_20_2310", "EECS485001");
-      data.addChart("f_20_2310", "EECS490001");
+      for (var i = 0; i < defaultClasses.length; ++i) {
+        data.addChart(term, defaultClasses[i]);
+      }
     });
   }
 };
