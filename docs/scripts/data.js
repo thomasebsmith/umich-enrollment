@@ -170,9 +170,13 @@
     var timeIndex = null;
     var beforeTime = null;
     for (var i = data.seats.length - 1; i >= 0; --i) {
-      if (data.seats[i].y <= 0) {
+      if (data.seats[i].y <= 0 && (i === 0 || data.seats[i - 1].y > 0)) {
         time = new Date(data.seats[i].t);
         timeIndex = i;
+        break;
+      }
+      else if (data.seats[i].y > 0) {
+        break;
       }
     }
     if (timeIndex !== null && timeIndex !== 0) {
