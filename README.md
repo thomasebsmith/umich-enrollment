@@ -16,3 +16,15 @@ capture data. Then run
 $ ./captureData.sh     # will require you to respond "y" to a prompt
 $ ./condenseData.py
 ```
+
+## `term` Format
+The `term` file should be formatted as follows:
+```
+<term with ID>
+<class to capture #1>
+<class to capture #2>
+...
+```
+
+For example, `<term with ID>` could be `f_20_2310`, and
+`<class to capture #1>` could be `EECS183001`.
