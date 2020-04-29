@@ -28,3 +28,6 @@ The `term` file should be formatted as follows:
 
 For example, `<term with ID>` could be `f_20_2310`, and
 `<class to capture #1>` could be `EECS183001`.
+
+Note that both of these IDs can be found by searching for a class on the
+course catalog and examining the resulting URL for the class.
