@@ -3,6 +3,7 @@ This repository contains utilities to collect data about U-M enrollment
 in some classes during a given term.
 
 It also contains data about undergraduate EECS enrollment for Fall 2020.
+Registration took place during the Winter 2020 semester.
 
 Note that this data was collected prior to schedule adjustments due to COVID-19.
 
